@@ -62,20 +62,45 @@ public partial class Default : System.Web.UI.Page
         string botText = bot.Text;
 
         PointF firstLocation = new PointF(10f, 10f);
-        PointF secondLocation = new PointF(10f, 50f);
+        PointF secondLocation = new PointF(10f, 500f);
 
         string imageFilePath = Server.MapPath("~/Images/") + fileName; 
         Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(imageFilePath);//load the image file
 
         using (Graphics graphics = Graphics.FromImage(bitmap))
         {
-            using (Font arialFont = new Font("Arial", 10))
+            using (Font arialFont = new Font("Arial", 40))
             {
-                graphics.DrawString(topText, arialFont, Brushes.Blue, firstLocation);
-                graphics.DrawString(botText, arialFont, Brushes.Red, secondLocation);
+                graphics.DrawString(topText, arialFont, Brushes.Black, firstLocation);
+                graphics.DrawString(botText, arialFont, Brushes.Black, secondLocation);
             }
         }
         bitmap.Save(Server.MapPath("~/Images/edit/") + fileName, System.Drawing.Imaging.ImageFormat.Jpeg);//save the image file
+        try
+        {
+            string connectionString = "uid=guest;server=bryce-aws.duckdns.org;port=3307;database=it210b;password=guest;";
+            MySqlConnection MyConn = new MySqlConnection(connectionString);
+            MyConn.Open();
+            string dataQuery = "SELECT userId FROM users WHERE email ='" + Request.QueryString["email"] + "'";
+            MySqlCommand command = new MySqlCommand(dataQuery, MyConn);
+            MySqlDataReader reader = command.ExecuteReader();
+            string idnumber = "";
+            while (reader.Read())
+            {
+                idnumber = reader.GetString(0);
+            }
+            MyConn.Close();
+            MyConn.Open();
+            dataQuery = "INSERT INTO images (imagePath,altText,userId) VALUES('/images/" + fileName + "','" + fileName + "'," + idnumber + ")";
+            MySqlCommand MyCommand2 = new MySqlCommand(dataQuery, MyConn);
+            MyCommand2.ExecuteNonQuery();
+            MyConn.Close();
+        }
+        catch (MySqlException ex)
+        {
+            int errorcode = ex.Number;
+            Label1.Text = ex.Message;
+        }
         Response.Redirect(Request.Url.AbsoluteUri + "&filename=" + fileName);
     }
 }
