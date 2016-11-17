@@ -37,12 +37,18 @@ public partial class Default : System.Web.UI.Page
     }
     protected void Upload(object sender, EventArgs e)
     {
-        if (FileUpload1.HasFile)
+        if (Request.QueryString["email"] != null)
         {
-            //string fileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
-            string fileName = string.Format(@"{0}meme.jpeg", Guid.NewGuid());
-            FileUpload1.PostedFile.SaveAs(Server.MapPath("~/Images/") + fileName);
-            Response.Redirect(Request.Url.AbsoluteUri);
+            if (FileUpload1.HasFile)
+            {
+                //string fileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
+                string fileName = string.Format(@"{0}meme.jpeg", Guid.NewGuid());
+                FileUpload1.PostedFile.SaveAs(Server.MapPath("~/Images/") + fileName);
+                Response.Redirect(Request.Url.AbsoluteUri);
+            }
+        } else
+        {
+            ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "You have to authenticate in order to upload an image." + "');", true);
         }
     }
 }
