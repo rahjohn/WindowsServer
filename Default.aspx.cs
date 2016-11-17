@@ -8,10 +8,10 @@ using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 using System.IO;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 public partial class Default : System.Web.UI.Page
 {
-    string fileName = string.Format(@"{0}meme.jpeg", Guid.NewGuid());
     protected void Page_Load(object sender, EventArgs e)
     {
         string name = Request.QueryString["name"];
@@ -43,9 +43,10 @@ public partial class Default : System.Web.UI.Page
         {
             if (FileUpload1.HasFile)
             {
+                string fileName = string.Format(@"{0}meme.jpeg", Guid.NewGuid());
                 //string fileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
                 FileUpload1.PostedFile.SaveAs(Server.MapPath("~/Images/") + fileName);
-                Response.Redirect(Request.Url.AbsoluteUri);
+                Response.Redirect(Request.Url.AbsoluteUri + "&filename=" + fileName);
             }
         } else
         {
@@ -54,6 +55,7 @@ public partial class Default : System.Web.UI.Page
     }
     protected void addText(object sender, EventArgs e)
     {
+        string fileName = Request.QueryString["fileName"];
         TextBox top = (TextBox)TextBox4;
         string topText = top.Text;
         TextBox bot = (TextBox)TextBox5;
@@ -73,7 +75,7 @@ public partial class Default : System.Web.UI.Page
                 graphics.DrawString(botText, arialFont, Brushes.Red, secondLocation);
             }
         }
-
-        bitmap.Save(imageFilePath);//save the image file
+        bitmap.Save(Server.MapPath("~/Images/edit/") + fileName, System.Drawing.Imaging.ImageFormat.Jpeg);//save the image file
+        Response.Redirect(Request.Url.AbsoluteUri + "&filename=" + fileName);
     }
 }
