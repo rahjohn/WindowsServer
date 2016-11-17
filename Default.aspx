@@ -14,17 +14,18 @@
         userID: <asp:TextBox ID="TextBox3" runat="server"></asp:TextBox><br />
         <asp:Button ID="Button1" runat="server" Text="Submit" OnClick="Button1_Click" />
         <asp:FileUpload ID="FileUpload1" runat="server" />
-<asp:Button ID="btnUpload" runat="server" Text="Upload" OnClick="Upload" />
-<hr />
-<asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false" ShowHeader="false">
-    <Columns>
-        <asp:BoundField DataField="Text" />
-        <asp:ImageField DataImageUrlField="Value" ControlStyle-Height="100" ControlStyle-Width="100" />
-    </Columns>
-</asp:GridView>
-    <div>
-    
-    </div>
-    </form>
+        <asp:Button ID="btnUpload" runat="server" Text="Upload" OnClick="Upload" />
+        <hr />
+        Text Top: <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox><br />
+        Text Bottom: <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox><br />
+        <asp:Button ID="Button2" runat="server" Text="Add Text" onClick="addText" /><br /><br />
+        Filter: <asp:DropDownList ID="DropDownList1" runat="server">
+            <asp:ListItem>Sunny</asp:ListItem>
+            <asp:ListItem>Bright</asp:ListItem>
+            <asp:ListItem>Dark</asp:ListItem>
+            
+                </asp:DropDownList><br />
+        <asp:Button ID="Button3" runat="server" Text="Add Filter" />
+   </form>
 </body>
 </html>

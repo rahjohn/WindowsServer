@@ -7,9 +7,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 using System.IO;
+using System.Drawing;
 
 public partial class Default : System.Web.UI.Page
 {
+    string fileName = string.Format(@"{0}meme.jpeg", Guid.NewGuid());
     protected void Page_Load(object sender, EventArgs e)
     {
         string name = Request.QueryString["name"];
@@ -42,7 +44,6 @@ public partial class Default : System.Web.UI.Page
             if (FileUpload1.HasFile)
             {
                 //string fileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
-                string fileName = string.Format(@"{0}meme.jpeg", Guid.NewGuid());
                 FileUpload1.PostedFile.SaveAs(Server.MapPath("~/Images/") + fileName);
                 Response.Redirect(Request.Url.AbsoluteUri);
             }
@@ -50,5 +51,29 @@ public partial class Default : System.Web.UI.Page
         {
             ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + "You have to authenticate in order to upload an image." + "');", true);
         }
+    }
+    protected void addText(object sender, EventArgs e)
+    {
+        TextBox top = (TextBox)TextBox4;
+        string topText = top.Text;
+        TextBox bot = (TextBox)TextBox5;
+        string botText = bot.Text;
+
+        PointF firstLocation = new PointF(10f, 10f);
+        PointF secondLocation = new PointF(10f, 50f);
+
+        string imageFilePath = Server.MapPath("~/Images/") + fileName; 
+        Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(imageFilePath);//load the image file
+
+        using (Graphics graphics = Graphics.FromImage(bitmap))
+        {
+            using (Font arialFont = new Font("Arial", 10))
+            {
+                graphics.DrawString(topText, arialFont, Brushes.Blue, firstLocation);
+                graphics.DrawString(botText, arialFont, Brushes.Red, secondLocation);
+            }
+        }
+
+        bitmap.Save(imageFilePath);//save the image file
     }
 }
