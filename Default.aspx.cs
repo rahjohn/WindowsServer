@@ -49,29 +49,16 @@ public partial class Default : System.Web.UI.Page
     }
     protected void addText(object sender, EventArgs e)
     {
-        string fileName = Request.QueryString["fileName"];
-        string imageFilePath = Server.MapPath("~/Images/") + fileName;
-        Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(imageFilePath);//load the image file
-        // if (DropDownList1.SelectedItem.Text == "A")
-        //{
-        // create grayscale filter (BT709)
-        Grayscale filter = new Grayscale(0.2125, 0.7154, 0.0721);
-        // apply the filter
-        Bitmap grayImage = filter.Apply(bitmap);
-        // }
-        //  else
-        // {
-        // do something
-        // }
-        bitmap.Save(Server.MapPath("~/Images/edit/") + fileName, System.Drawing.Imaging.ImageFormat.Jpeg);//save the image file
-        Bitmap bitmap2 = (Bitmap)System.Drawing.Image.FromFile(imageFilePath);//load the image file
         TextBox top = (TextBox)TextBox4;
         string topText = top.Text;
         TextBox bot = (TextBox)TextBox5;
         string botText = bot.Text;
         PointF firstLocation = new PointF(10f, 10f);
         PointF secondLocation = new PointF(10f, 500f);
-        using (Graphics graphics = Graphics.FromImage(bitmap2))
+        string fileName = Request.QueryString["fileName"];
+        string imageFilePath = Server.MapPath("~/Images/") + fileName;
+        Bitmap bitmap = (Bitmap)System.Drawing.Image.FromFile(imageFilePath);//load the image file
+        using (Graphics graphics = Graphics.FromImage(bitmap))
         {
             using (Font arialFont = new Font("Arial", 40))
             {
@@ -79,7 +66,21 @@ public partial class Default : System.Web.UI.Page
                 graphics.DrawString(botText, arialFont, Brushes.Black, secondLocation);
             }
         }
-        bitmap2.Save(Server.MapPath("~/Images/edit/") + fileName, System.Drawing.Imaging.ImageFormat.Jpeg);//save the image file
+        Bitmap temp = bitmap;
+        if (DropDownList1.SelectedItem.Text == "Grayscale")
+        {
+            // create grayscale filter (BT709)
+            Grayscale filter = new Grayscale(0.2125, 0.7154, 0.0721);
+            // apply the filter
+        temp = filter.Apply(bitmap);
+        } else
+        {
+            // create filter
+            Sepia filter = new Sepia();
+            // apply the filter
+            filter.ApplyInPlace(bitmap);
+        }
+        temp.Save(Server.MapPath("~/Images/edit/") + fileName, System.Drawing.Imaging.ImageFormat.Jpeg);//save the image file
         try
         {
             string connectionString = "uid=guest;server=bryce-aws.duckdns.org;port=3307;database=it210b;password=guest;";

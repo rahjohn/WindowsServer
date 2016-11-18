@@ -20,6 +20,7 @@
         Text Bottom: <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox><br />
         Filter: <asp:DropDownList ID="DropDownList1" runat="server">
             <asp:ListItem>Grayscale</asp:ListItem>
+            <asp:ListItem>Sepia</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Button ID="Button2" runat="server" Text="Save Changes" onClick="addText" /><br /><br />
    </form>
