@@ -18,14 +18,10 @@
         <hr />
         Text Top: <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox><br />
         Text Bottom: <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox><br />
-        <asp:Button ID="Button2" runat="server" Text="Add Text" onClick="addText" /><br /><br />
         Filter: <asp:DropDownList ID="DropDownList1" runat="server">
-            <asp:ListItem>Sunny</asp:ListItem>
-            <asp:ListItem>Bright</asp:ListItem>
-            <asp:ListItem>Dark</asp:ListItem>
-            
+            <asp:ListItem>Grayscale</asp:ListItem>
                 </asp:DropDownList><br />
-        <asp:Button ID="Button3" runat="server" Text="Add Filter" />
+                <asp:Button ID="Button2" runat="server" Text="Save Changes" onClick="addText" /><br /><br />
    </form>
 </body>
 </html>
