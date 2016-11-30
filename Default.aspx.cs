@@ -83,7 +83,7 @@ public partial class Default : System.Web.UI.Page
         temp.Save(Server.MapPath("~/Images/edit/") + fileName, System.Drawing.Imaging.ImageFormat.Jpeg);//save the image file
         try
         {
-            string connectionString = "uid=guest;server=bryce-aws.duckdns.org;port=3307;database=it210b;password=guest;";
+            string connectionString = "uid=guest;server=192.168.12.122;port=3306;database=it210b;password=guest;";
             MySqlConnection MyConn = new MySqlConnection(connectionString);
             MyConn.Open();
             string dataQuery = "SELECT userId FROM users WHERE email ='" + Request.QueryString["email"] + "'";
@@ -106,6 +106,6 @@ public partial class Default : System.Web.UI.Page
             int errorcode = ex.Number;
             Label1.Text = ex.Message;
         }
-        Response.Redirect(Request.Url.AbsoluteUri);
+        Response.Redirect("http://192.168.12.122:1337/memes");
     }
 }
